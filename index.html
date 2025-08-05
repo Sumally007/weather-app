@@ -13,6 +13,11 @@
         <button><img src="images/search.png" alt="" /></button>
       </div>
 
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+      </div>
+
       <div class="error">
         <p>Invalid city name</p>
       </div>
@@ -51,13 +56,21 @@
       const weatherIcon = document.querySelector(".weather-icon");
 
       async function checkWeather(city) {
+        // Show loading indicator and hide weather/error displays
+        document.querySelector(".loading").style.display = "flex";
+        document.querySelector(".weather").style.display = "none";
+        document.querySelector(".error").style.display = "none";
+
         const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+
+        // Hide loading indicator after fetch
+        document.querySelector(".loading").style.display = "none";
 
         if (response.status == 404) {
           document.querySelector(".error").style.display = "block";
-          document.querySelector(".weather").style.display = "none";
         } else {
           var data = await response.json();
+          document.querySelector(".weather").style.display = "block";
 
           document.querySelector(".city").innerHTML = data.name;
           document.querySelector(".temp").innerHTML =
